@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "449371582151",
+    "project_id": "madpro-83cf8",
+    "storage_bucket": "madpro-83cf8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449371582151:android:82777a5ccfec07664618e2",
+        "android_client_info": {
+          "package_name": "com.example.pro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlb1G_zPSMJGmcU2UDw34unZk-m8iiNEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
