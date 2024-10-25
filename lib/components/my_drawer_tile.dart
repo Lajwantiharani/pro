@@ -5,27 +5,27 @@ class MyDrawerTile extends StatelessWidget {
   final IconData? icon;
   final VoidCallback? onTap;
 
+
   const MyDrawerTile({
-    super.key, // This alone handles the key parameter.
-    required this.text,
-    required this.icon,
-    required this.onTap,
+     Key? key,
+  required this.text,
+  required this.icon,
+  required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(25.0),
-      child: ListTile(
-        title: Text(
-          text,
-          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-        ),
-        leading: Icon(
-          icon,
-          color: Theme.of(context).colorScheme.inversePrimary,
-        ),
-        onTap: onTap,
+
+      child: ListTile(title: Text(
+        text,
+        style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+      
+      ),
+      leading: Icon(icon,color: Theme.of(context).colorScheme.inversePrimary),
+      onTap: onTap,
+      
       ),
     );
   }
