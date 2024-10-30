@@ -1,4 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:pro/models/cart_item.dart';
 import 'package:pro/models/food.dart';
 import 'package:pro/pages/cart_page.dart';
 
@@ -8,7 +11,8 @@ class Restaurant extends ChangeNotifier {
     // burgers
     Food(
       name: "Classic Cheeseburger",
-      description: "A juicy beef patty with melted cheddar, lettuce, tomato, and a hint of onion and pickle.",
+      description:
+          "A juicy beef patty with melted cheddar, lettuce, tomato, and a hint of onion and pickle.",
       imagePath: "lib/images/burgers/cheese_burger.jpg",
       price: 9.99,
       category: FoodCategory.burgers,
@@ -20,7 +24,8 @@ class Restaurant extends ChangeNotifier {
     ),
     Food(
       name: "Bacon Burger",
-      description: "A tasty burger with crispy bacon, cheddar cheese, and BBQ sauce.",
+      description:
+          "A tasty burger with crispy bacon, cheddar cheese, and BBQ sauce.",
       imagePath: "lib/images/burgers/beef_burger.jpg",
       price: 10.99,
       category: FoodCategory.burgers,
@@ -42,7 +47,8 @@ class Restaurant extends ChangeNotifier {
     ),
     Food(
       name: "Veggie Burger",
-      description: "A healthy option with a grilled veggie patty, lettuce, tomato, and avocado.",
+      description:
+          "A healthy option with a grilled veggie patty, lettuce, tomato, and avocado.",
       imagePath: "lib/images/burgers/vege_burger.jpg",
       price: 8.99,
       category: FoodCategory.burgers,
@@ -66,7 +72,8 @@ class Restaurant extends ChangeNotifier {
     // salads
     Food(
       name: "Caesar Salad",
-      description: "Crisp romaine lettuce with Caesar dressing, croutons, and parmesan.",
+      description:
+          "Crisp romaine lettuce with Caesar dressing, croutons, and parmesan.",
       imagePath: "lib/images/salads/caesar_salad.jpg",
       price: 7.99,
       category: FoodCategory.salads,
@@ -124,7 +131,7 @@ class Restaurant extends ChangeNotifier {
     Food(
       name: "Fries",
       description: "Golden crispy fries.",
-      imagePath: "lib/images/sides/loadedfries.jpg",
+      imagePath: "lib/images/sides/loadedfries_side.jpg",
       price: 2.99,
       category: FoodCategory.sides,
       availableAddons: [
@@ -135,7 +142,7 @@ class Restaurant extends ChangeNotifier {
     Food(
       name: "Onion Rings",
       description: "Crispy battered onion rings.",
-      imagePath: "lib/images/sides/onion_rings.jpg",
+      imagePath: "lib/images/sides/onion_rings_side.jpg",
       price: 3.99,
       category: FoodCategory.sides,
       availableAddons: [
@@ -227,252 +234,162 @@ class Restaurant extends ChangeNotifier {
 
     // drinks
     Food(
-      name: "Berry",
-      description: "Chilled can of Berry.",
+      name: "Coke",
+      description: "Refreshing classic Coca-Cola.",
       imagePath: "lib/images/drinks/berry_drink.jpg",
       price: 1.99,
-      category: FoodCategory.drinks,
-      availableAddons: [
-        Addon(name: "Lemon Slice", price: 0.50),
-      ],
-    ),
-    Food(
-      name: "choco",
-      description: "Freshly squeezed choco.",
-      imagePath: "lib/images/drinks/choco_drink.jpg",
-      price: 2.99,
       category: FoodCategory.drinks,
       availableAddons: [],
     ),
     Food(
-      name: "Peach",
-      description: "peach drink with sweetness.",
-      imagePath: "lib/images/drinks/peach_drink.jpg",
-      price: 3.99,
-      category: FoodCategory.drinks,
-      availableAddons: [
-        Addon(name: "Extra Shot", price: 1.00),
-      ],
-    ),
-    Food(
-      name: "Straw shake",
-      description: "Creamy Straw available in chocolate, vanilla, or strawberry.",
-      imagePath: "lib/images/drinks/straw_drink.jpg",
-      price: 4.99,
-      category: FoodCategory.drinks,
-      availableAddons: [
-        Addon(name: "Whipped Cream", price: 0.99),
-        Addon(name: "Sprinkles", price: 0.50),
-      ],
-    ),
-    Food(
-      name: "Vanilla",
-      description: "Refreshing lemonade made with fresh lemons.",
-      imagePath: "lib/images/drinks/vanila_drink.jpg",
+      name: "Lemonade",
+      description: "Homemade lemonade with fresh lemons.",
+      imagePath: "lib/images/drinks/choco_drink.jpg",
       price: 2.49,
       category: FoodCategory.drinks,
       availableAddons: [],
     ),
+    Food(
+      name: "Iced Tea",
+      description: "Cold and refreshing iced tea.",
+      imagePath: "lib/images/drinks/peach_drink.jpg",
+      price: 2.29,
+      category: FoodCategory.drinks,
+      availableAddons: [],
+    ),
+    Food(
+      name: "Milkshake",
+      description:
+          "Thick and creamy milkshake available in chocolate, vanilla, or strawberry.",
+      imagePath: "lib/images/drinks/straw_drink.jpg",
+      price: 3.99,
+      category: FoodCategory.drinks,
+      availableAddons: [],
+    ),
+    Food(
+      name: "Espresso",
+      description: "Strong and rich espresso shot.",
+      imagePath: "lib/images/drinks/vanila_drink.jpg",
+      price: 1.99,
+      category: FoodCategory.drinks,
+      availableAddons: [],
+    ),
   ];
+  // Cart list
+  final List<CartItem> _cart = [];
 
   // Getter for the food menu
   List<Food> get menu => _menu;
-}
 
+  // Getter for the cart
+  List<CartItem> get cart => _cart;
 
+  // Method to add item to the cart
+  void addToCart(Food food, List<Addon> selectedAddons) {
+    // Check if the item is already in the cart with the same addons
+    CartItem? cartItem = _cart.firstWhereOrNull((item) {
+      bool isSameFood = item.food == food;
+      bool isSameAddons =
+          ListEquality().equals(item.selectedAddons, selectedAddons);
+      return isSameFood && isSameAddons;
+    });
 
- final List<CartItem> _cart =[];
-
-void addToCart(Food food,List<Addon> selectedAddons){
-  CartItem? cartItem =_cart.firstWhereOrNull((item){
-
-bool isSameFood =item.food ==food;
-
-
-
-bool isSameAddons =ListEquality().equals(items.selectedAddons);
-return isSameFood && isSameAddons;
- } );
- 
- 
- 
- 
- if(cartItem !=null){
-  cartItem.quantity++;
-
-
- }
- else{
-  _cart.add(CartItem(food: food,selectedAddons: selectedAddons,
-  
-  ),
-  
-  ) ;
- }
-
-notifyListeners();
- } 
-
-void removeFromCart(CartItem cartItem){
-  int cartIndex = cart.indexOf(cartItem);
-}
-if (cartIndex !=  -1){
-  if(_cart(cartIndex).quantity >1){
-    _cart(cartIndex).quantity--;
-  }else{
-    _cart.removeAt(cartIndex);
-  }
-}
-notifyListeners();
-}
-
-double getTotalPrice(){
-  double total =0.0;
-  for(CartItem  cartItem in _cart) {
-    double itemTotal =cart.food.price;
-    for (Addon addon in cartItem.selectedAddons){
-      itemTotal +=addon.price;
+    // If item exists, increase the quantity
+    if (cartItem != null) {
+      cartItem.quantity++;
+    } else {
+      // Otherwise, add a new item to the cart
+      _cart.add(CartItem(
+        food: food,
+        selectedAddons: selectedAddons,
+      ));
     }
-    total+= itemTotal * cartItem.quantity;
+
+    // Notify listeners to update the UI
+    notifyListeners();
   }
-  return total;
+
+  // Method to remove an item from the cart
+  void removeFromCart(CartItem cartItem) {
+    int cartIndex = _cart.indexOf(cartItem);
+
+    if (cartIndex != -1) {
+      if (_cart[cartIndex].quantity > 1) {
+        _cart[cartIndex].quantity--;
+      } else {
+        _cart.removeAt(cartIndex);
+      }
+
+      // Notify listeners to update the UI
+      notifyListeners();
+    }
+  }
+
+  // Method to get total price of items in the cart
+  double getTotalPrice() {
+    double total = 0.0;
+    for (CartItem cartItem in _cart) {
+      double itemTotal = cartItem.food.price;
+      for (Addon addon in cartItem.selectedAddons) {
+        itemTotal += addon.price;
+      }
+      total += itemTotal * cartItem.quantity;
+    }
+    return total;
+  }
+
+  // Method to get total item count in the cart
+  int getTotalItemCount() {
+    int totalItemCount = 0;
+    for (CartItem cartItem in _cart) {
+      totalItemCount += cartItem.quantity;
+    }
+    return totalItemCount;
+  }
+
+  // Method to clear the cart
+  void clearCart() {
+    _cart.clear();
+    notifyListeners();
+  }
+
+  // Method to display cart receipt
+  String displayCartReceipt() {
+    final receipt = StringBuffer();
+    receipt.writeln("Here's your receipt");
+    receipt.writeln();
+
+    // Corrected date formatting
+    String formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    receipt.writeln(formattedDate);
+    receipt.writeln();
+    receipt.writeln("---------");
+
+    for (final cartItem in _cart) {
+      receipt.writeln(
+          "${cartItem.quantity} * ${cartItem.food.name} - ${_formatPrice(cartItem.food.price)}");
+
+      if (cartItem.selectedAddons.isNotEmpty) {
+        receipt.writeln(" Add-ons: ${_formatAddons(cartItem.selectedAddons)}");
+      }
+      receipt.writeln();
+    }
+    receipt.writeln("-------");
+    receipt.writeln();
+    receipt.writeln("Total items: ${getTotalItemCount()}");
+    receipt.writeln("Total price: ${_formatPrice(getTotalPrice())}");
+
+    return receipt.toString();
+  }
+
+  String _formatPrice(double price) {
+    return "\$${price.toStringAsFixed(2)}"; // Fixed formatting
+  }
+
+  String _formatAddons(List<Addon> addons) {
+    return addons
+        .map((addon) => "${addon.name} (${_formatPrice(addon.price)})")
+        .join(", "); // Fixed syntax
+  }
 }
-int getTotalItemCount()
-{
-  int totalItemCount =0;
-   for (CartItem cartItem in _cart){
-    totalItemCount += cartItem.quantity;
-
-   }
-   return totalItemCount;
-}
-void clearCart(){
-  _cart.clear();
-  notifyListeners();
-
-}
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

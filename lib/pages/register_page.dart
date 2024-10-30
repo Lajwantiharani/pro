@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pro/services/auth/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -15,11 +16,38 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
+  void register() async {
+    final _authService = AuthService();
+    if (passwordController.text == confirmPasswordController.text) {
+      try {
+        await _authService.signUpWithEmailPassword(
+          emailController.text,
+          passwordController.text,
+        );
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(e.toString()), // Corrected from e.String() to e.toString()
+          ),
+        );
+      }
+    } else {
+      // Moved the else block outside the try-catch
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Passwords do not match"), // Corrected Text widget usage
+        ),
+      );
+    }
+  }
+
   void signUp() {
     if (passwordController.text == confirmPasswordController.text) {
       print('Email: ${emailController.text}');
       print('Password: ${passwordController.text}');
-      // Add actual sign-up logic here
+      register(); // Call the register function to perform the actual sign-up
     } else {
       // Show an error message if passwords do not match
       ScaffoldMessenger.of(context).showSnackBar(
@@ -107,9 +135,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Theme.of(context).colorScheme.inversePrimary,
                         fontWeight: FontWeight.bold,
                       ),
-                    ))
+                    )),
               ],
-            )
+            ),
           ],
         ),
       ),

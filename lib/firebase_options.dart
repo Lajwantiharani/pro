@@ -79,4 +79,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'madpro-83cf8.appspot.com',
     measurementId: 'G-VK4ELR6N1H',
   );
+
 }

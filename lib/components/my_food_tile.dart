@@ -45,10 +45,11 @@ class FoodTile extends StatelessWidget {
 
                 const SizedBox(width: 15),
                 // Food image
-                
+
                 ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(food.imagePath, height: 120)),
+                    child:
+                        Image.asset(food.imagePath, height: 120, width: 120)),
               ],
             ),
           ),
